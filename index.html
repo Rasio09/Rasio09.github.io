@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dialog</title>
+    <link rel="stylesheet" href="style.css">
+    <script type="text/javascript" src="https://code.responsivevoice.org/responsivevoice.js"></script>
+</head>
+<body>
+        <!-- <script src="responsivevoice.js"></script> -->
+    <div class="judul">
+        <h2>PERCAKAPAN VOICE</h2>
+    </div>
+
+    <div class="dialog">
+        <div class="laki">
+            <center>
+                <textarea name="voice" id="output" class="hide"></textarea>
+                <br><br>
+                <img src="img/l.png">
+                <br><br>
+                <button type="button" onclick="runSpeechRecognition()" style="margin-left: 8px;">Voice</button> &nbsp; <span id="action"></span>
+                <br><br>
+                <button onclick="play_l()">Play</button>
+            </center>
+            
+        </div>
+
+        <div class="perempuan">
+            <center>
+                <textarea name="voice1" id="output1" class="hide1"></textarea>
+                <br><br>
+                <img src="img/p.png">
+                <br><br>
+                <button type="button" onclick="runSpeechRecognition_p()" style="margin-left: 8px;">Voice</button> &nbsp; <span id="action1"></span>
+                <br><br>
+                <button onclick="play_p()">Play</button>
+            </center>
+            
+        </div>
+    </div>
+
+<script>
+    // laki
+    navigator.mediaDevices.getUserMedia({ audio: true })
+    .then(function(stream) {
+        console.log('You let me use your mic!')})
+    .catch(function(err) {
+        console.log('No mic for you!')});
+
+    /* JS comes here */
+    var a=1;
+    function runSpeechRecognition() {  		    	
+        // get output div reference
+        var output = document.getElementById("output");
+        // get action element reference
+        var action = document.getElementById("action");
+        // new speech recognition object
+                
+        var SpeechRecognition = SpeechRecognition || webkitSpeechRecognition;
+        var recognition = new SpeechRecognition();
+                        
+        // This runs when the speech recognition service starts
+        recognition.onstart = function() {	
+            action.innerHTML = "<br><small>voice</small>";
+        };
+                            
+        recognition.onspeechend = function() {
+            action.innerHTML = "<br><small>Selesai</small>";
+            recognition.stop();
+        }
+                        
+        // This runs when the speech recognition service returns result
+        recognition.onresult = function(event) {
+            var transcript = event.results[0][0].transcript;
+            //var confidence = event.results[0][0].confidence;
+            output.innerHTML = transcript;
+            a = a + 1;
+            output.classList.remove("hide");
+        };
+        // start recognition
+        recognition.lang ='id-ID';
+        recognition.start();
+    }
+
+    // perempuan
+    navigator.mediaDevices.getUserMedia({ audio: true })
+    .then(function(stream) {
+        console.log('You let me use your mic!')})
+    .catch(function(err) {
+        console.log('No mic for you!')});
+
+    /* JS comes here */
+    var a=1;
+    function runSpeechRecognition_p() {  		    	
+        // get output div reference
+        var output = document.getElementById("output1");
+        // get action element reference
+        var action = document.getElementById("action1");
+        // new speech recognition object
+                
+        var SpeechRecognition = SpeechRecognition || webkitSpeechRecognition;
+        var recognition = new SpeechRecognition();
+                        
+        // This runs when the speech recognition service starts
+        recognition.onstart = function() {	
+            action.innerHTML = "<br><small>voice</small>";
+        };
+                            
+        recognition.onspeechend = function() {
+            action.innerHTML = "<br><small>Selesai</small>";
+            recognition.stop();
+        }
+                        
+        // This runs when the speech recognition service returns result
+        recognition.onresult = function(event) {
+            var transcript = event.results[0][0].transcript;
+            //var confidence = event.results[0][0].confidence;
+            output.innerHTML = transcript;
+            a = a + 1;
+            output.classList.remove("hide1");
+        };
+        // start recognition
+        recognition.lang ='id-ID';
+        recognition.start();
+    }
+
+    // voice laki
+    function play_l(){
+        var TextSpeak = document.getElementById('output').value;
+        responsiveVoice.speak(TextSpeak, "Indonesian Male",{ pitch: 1, rate: 1, volume: 1});
+    }
+    // voice perempuan
+    function play_p(){
+        var TextSpeak = document.getElementById('output1').value;
+        responsiveVoice.speak(TextSpeak, "Indonesian Female",{pitch: 1,rate: 1,volume: 1});
+    }
+</script>
+</body>
+</html>
